@@ -1,0 +1,25 @@
+    Affichage des formations disponibles :
+        Tous les utilisateurs non connectés peuvent afficher toutes les formations disponibles.
+        Les formations peuvent être triées par catégorie, par mot clé, par type de formation (présentiel ou distanciel), ou toutes les formations peuvent être affichées en même temps.
+
+    Gestion du panier :
+        Les utilisateurs connectés peuvent ajouter ou supprimer des formations de leur panier.
+        Les formations peuvent être ajoutées au panier depuis la page d'affichage des formations disponibles.
+        Les utilisateurs peuvent afficher le contenu de leur panier à tout moment.
+        Les utilisateurs peuvent passer une commande à tout moment, à condition d'être connectés.
+        Si l'utilisateur n'est pas connecté, il sera redirigé vers la création d'un compte utilisateur.
+
+    Gestion des formations :
+        L'administrateur peut ajouter, supprimer ou mettre à jour une formation.
+        Les formations sont caractérisées par leur nom, leur description, leur durée en jours, leur type de formation (présentiel ou distanciel) et leur prix.
+        Les formations peuvent être classées par catégorie (par exemple, Dev Web, CMS, Bureautique, IA, Cyber sécurité, etc.).
+        L'administrateur peut afficher toutes les formations existantes.
+
+    Gestion des clients et des commandes :
+        Une commande doit être associée à un client.
+        L'administrateur peut afficher toutes les commandes d'un client.
+
+    Authentification :
+        Les utilisateurs doivent s'authentifier pour accéder à certaines fonctionnalités, telles que la gestion du panier et la commande de formations.
+        L'administrateur doit s'authentifier pour accéder à la gestion des formations et des clients/commandes.
+
