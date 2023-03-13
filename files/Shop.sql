@@ -37,6 +37,7 @@ CREATE TABLE T_Customers (
 	FOREIGN KEY (idUser)	REFERENCES T_Users(idUser)
 ) ENGINE = InnoDB;
 
+INSERT INTO T_Customers (IDCustomer, name, firstName, email, phone, address, idUser) VALUES ( 1, 'Wache'     ,	'Nicolas', 'wache@mail.com', '0658585858', '150 route de la rosalie 40390 Labenne', 1  );
 -- -----------------------------------------------------------------------------
 -- - Construction de la table des Rôles	                                     ---
 -- -----------------------------------------------------------------------------
@@ -58,7 +59,7 @@ CREATE TABLE T_User_Roles (
 
 INSERT INTO T_User_Roles (IdRole, IdUser) VALUES (1,1);
 -- -----------------------------------------------------------------------------
--- - Construction de la table des catégories d'articles
+-- - Construction de la table des catégories de cours
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE T_Categories (
@@ -75,10 +76,10 @@ insert into T_Categories (IdCategory, CatName, Description) values (4 , 'Adobe' 
 select * from t_categories;
 
 -- -----------------------------------------------------------------------------
--- - Construction de la table des articles en vente                         ---
+-- - Construction de la table des Cours en vente                         ---
 -- -----------------------------------------------------------------------------
-CREATE TABLE T_Articles (
-	IdArticle				int(4)		PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE T_Courses (
+	IdCourse				int(4)		PRIMARY KEY AUTO_INCREMENT,
 	Name					varchar(30) NOT NULL,
 	Description				varchar(70)	NOT NULL,
 	Duration				float (8) 	NOT NULL,
@@ -88,24 +89,24 @@ CREATE TABLE T_Articles (
 	FOREIGN KEY (IdCategory)	REFERENCES T_Categories(IdCategory)
 ) ENGINE = InnoDB;
 
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'JAVA','Java SE 8 : Syntaxe et Poo', 20, 'Presentiel', 2200, 1 );
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'JAVA Avance', 'Exception, Fichiers, Jdbc, tread', 20,'Presentiel', 2500, 1);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'SPRING',	'Spring Core/MVC/Security',	20 ,'Presentiel', 2200, 1);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'PHP Frameworks', 'Symphony', 15, 'Distanciel', 1800, 1);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'C#', 'DoNet Core', 20,'Presentiel', 2500, 1);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Debutant', 'Formation Debutant Windows', 25,'Presentiel', 1400, 2);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Intermediaire'    , 'Formation Intermediaire Windows', 20,'Distanciel', 1800, 2);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Avance', 'Formation avance Windows', 15,'Distanciel', 1800, 2);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Debutant', 'Formation Debutant pour Suite Office', 25,'Presentiel', 1500, 3);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Intermediaire', 'Formation Intermediaire pour Suite Office', 20,'Distanciel', 1800, 3);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Avance', 'Formation Avance pour Suite Office', 18,'Distanciel', 1800, 3);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Debutant', 'Formation Debutant pour Adobe Photoshop et Illustrator', 30,'Presentiel', 3000, 4);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Intermediaire', 'Formation Intermediaire pour Adobe Photoshop et Illustrator', 20,'Presentiel', 2500, 4);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Avance', 'Formation Avance pour Adobe Photoshop et Illustrator', 20,'Presentiel', 3000, 4);
-INSERT INTO T_Articles ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Expert', 'Formation Expert pour Adobe Photoshop et Illustrator', 15,'Presentiel', 2200, 4);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'JAVA','Java SE 8 : Syntaxe et Poo', 20, 'Presentiel', 2200, 1 );
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'JAVA Avance', 'Exception, Fichiers, Jdbc, tread', 20,'Presentiel', 2500, 1);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'SPRING',	'Spring Core/MVC/Security',	20 ,'Presentiel', 2200, 1);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'PHP Frameworks', 'Symphony', 15, 'Distanciel', 1800, 1);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'C#', 'DoNet Core', 20,'Presentiel', 2500, 1);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Debutant', 'Formation Debutant Windows', 25,'Presentiel', 1400, 2);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Intermediaire'    , 'Formation Intermediaire Windows', 20,'Distanciel', 1800, 2);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Windows Avance', 'Formation avance Windows', 15,'Distanciel', 1800, 2);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Debutant', 'Formation Debutant pour Suite Office', 25,'Presentiel', 1500, 3);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Intermediaire', 'Formation Intermediaire pour Suite Office', 20,'Distanciel', 1800, 3);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Office Avance', 'Formation Avance pour Suite Office', 18,'Distanciel', 1800, 3);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Debutant', 'Formation Debutant pour Adobe Photoshop et Illustrator', 30,'Presentiel', 3000, 4);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Intermediaire', 'Formation Intermediaire pour Adobe Photoshop et Illustrator', 20,'Presentiel', 2500, 4);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Avance', 'Formation Avance pour Adobe Photoshop et Illustrator', 20,'Presentiel', 3000, 4);
+INSERT INTO T_Courses ( Name, Description, Duration, Mode, UnitaryPrice , IdCategory  ) VALUES ( 'Adobe Expert', 'Formation Expert pour Adobe Photoshop et Illustrator', 15,'Presentiel', 2200, 4);
 
 
-SELECT * FROM T_Articles;
+SELECT * FROM T_Courses;
 
 -- select IdArticle,T_Articles.Description,Brand,UnitaryPrice,T_Articles.IdCategory,CatName,T_Categories.Description 
 -- from t_articles inner join t_categories where t_articles.IdCategory = t_categories.IdCategory and IdArticle=1;
@@ -126,8 +127,8 @@ CREATE TABLE T_Orders (
 CREATE TABLE T_Order_Items (
 	IdOrderItem			int(4)	PRIMARY KEY AUTO_INCREMENT,
 	
-	IdArticle           INT(4)   NOT NULL,
-	FOREIGN KEY(IdArticle) REFERENCES T_Articles(IdArticle),
+	IdCourse           INT(4)   NOT NULL,
+	FOREIGN KEY(IdCourse) REFERENCES T_Courses(IdCourse),
 	
 	Quantity			FLOAT(4) NOT NULL DEFAULT 1,
 	UnitaryPrice		FLOAT(4)	NOT NULL DEFAULT 0,

@@ -1,0 +1,4 @@
+db.driver=org.mariadb.jdbc.Driver
+db.password=fms2023
+db.login=nicolasW
+db.url=jdbc\:mariadb\://localhost\:3306/ShopForma
