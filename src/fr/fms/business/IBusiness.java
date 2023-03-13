@@ -62,4 +62,18 @@ public interface IBusiness {
 	 * @return Liste d'articles
 	 */
 	public ArrayList<Course> readCoursesByCatId(int idCat);
+	
+	/**
+	 * méthode qui renvoi tous les articles d'un mode d'apprentissage
+	 * @param type de mode
+	 * @return Liste d'articles
+	 */
+	public ArrayList<Course> readCoursesByMode(String mode);
+	
+	/**
+	 * méthode qui renvoi tous les articles d'un mode d'apprentissage
+	 * @param type de mode
+	 * @return Liste d'articles
+	 */
+	public ArrayList<Course> searchCoursesByWord(String word);
 }

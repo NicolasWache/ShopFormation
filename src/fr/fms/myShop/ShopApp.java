@@ -6,10 +6,12 @@
  */
 package fr.fms.myShop;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import fr.fms.authentication.Authenticate;
 import fr.fms.business.IBusinessImpl;
+import fr.fms.dao.CourseDao;
 import fr.fms.entities.Course;
 import fr.fms.entities.Category;
 import fr.fms.entities.Customer;
@@ -36,7 +38,7 @@ public class ShopApp {
 		System.out.println("Bonjour et bienvenue dans ma boutique, voici la liste de formations en stock\n");
 		displayCourses();
 		int choice = 0;
-		while(choice != 8) {
+		while(choice != 10) {
 			displayMenu();
 			choice = scanInt();
 			switch(choice) {
@@ -52,9 +54,13 @@ public class ShopApp {
 					break;
 				case 6 : displayCoursesByCategoryId();
 					break;
-				case 7 : connection();
+				case 7 : displayCoursesByMode();
 					break;
-				case 8 : System.out.println("à bientôt dans notre boutique :)");
+				case 8 : searchCourses();
+					break;
+				case 9 : connection();
+					break;
+				case 10 : System.out.println("à bientôt dans notre boutique :)");
 					break;					
 				default : System.out.println("veuillez saisir une valeur entre 1 et 8");
 			}
@@ -73,8 +79,10 @@ public class ShopApp {
 		System.out.println("4 : Afficher toutes les formations en stock");
 		System.out.println("5 : Afficher toutes les catégories en base");
 		System.out.println("6 : Afficher toutes les formations d'une catégorie");
-		System.out.println("7 : Connexion(Deconnexion) à votre compte");
-		System.out.println("8 : sortir de l'application");
+		System.out.println("7 : Afficher toutes les formations par mode d'apprentissage");
+		System.out.println("8 : Rechercher une formation par mot clés");
+		System.out.println("9 : Connexion(Deconnexion) à votre compte");
+		System.out.println("10 : sortir de l'application");
 	}
 	
 	/**
@@ -104,7 +112,46 @@ public class ShopApp {
 		}
 		else System.out.println("cette catégorie n'existe pas !");
 	}
+	
+	/**
+	 * Méthode qui affiche toutes les formation en fonction du mode d'apprentissage
+	 */
+	private static void displayCoursesByMode() {
+			System.out.println("Quelles types de formations recherchez vous ? ");
+			System.out.println("[1]- Formation en Présentiel [2]- Formation en Distanciel");
+			int id = scan.nextInt();
+			switch (id) {
+			case 1:
+				System.out.println("Voici la liste des formations en Présentiel");
+				System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
+				System.out.printf("------------------------------------------------------------%n");
+				business.readCoursesByMode("Presentiel").forEach( a -> System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",a.getId(),a.getName(),a.getDescription(),a.getDuration(), a.getMode(), a.getPrice()));
+				
+				break;
+			case 2: 
+				System.out.println("Voici la liste des formations en distanciel");
+				System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
+				System.out.printf("------------------------------------------------------------%n");
+				business.readCoursesByMode("Distanciel").forEach( a -> System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",a.getId(),a.getName(),a.getDescription(),a.getDuration(), a.getMode(), a.getPrice()));
+				break;
+			}
+		}
 
+	/**
+	 * Méthode qui permet de rechercher par mot clés
+	 */
+	private static void searchCourses() {
+		System.out.println("Saisissez le nom d'une formation recherché");
+		String searchWord = scan.next();
+		System.out.println("Voici la liste des formations contenant le mot clé " + searchWord);
+		System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
+		System.out.printf("------------------------------------------------------------%n");
+		business.searchCoursesByWord(searchWord).forEach( a -> System.out.printf("%-10s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",a.getId(),a.getName(),a.getDescription(),a.getDuration(), a.getMode(), a.getPrice()));
+		
+		
+	}
+	
+	
 	/**
 	 * Méthode qui affiche toutes les catégories
 	 */

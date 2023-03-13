@@ -1,5 +1,5 @@
 /**
- * @author El babili - 2022
+ * @author Wache Nicolas - 2023
  * 
  */
 
@@ -112,5 +112,15 @@ public class IBusinessImpl implements IBusiness {
 
 	public Category readOneCategory(int id) {
 		return categoryDao.read(id);
+	}
+
+	@Override
+	public ArrayList<Course> readCoursesByMode(String mode) {
+		return ((CourseDao) courseDao).readAllByMode(mode);
+	}
+
+	@Override
+	public ArrayList<Course> searchCoursesByWord(String word) {
+		return ((CourseDao) courseDao).searchByWord(word);
 	}
 }

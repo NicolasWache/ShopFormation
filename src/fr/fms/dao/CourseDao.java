@@ -1,6 +1,6 @@
 /**
  * Composant d'accès aux données de la table T_Courses dans la base de données Shop
- * @author El babili - 2022
+ * @author Wache Nicolas - 2023
  * 
  */
 
@@ -109,6 +109,47 @@ public class CourseDao implements Dao<Course> {
 	public ArrayList<Course> readAllByCat(int id) {
 		ArrayList<Course> courses = new ArrayList<Course>();
 		String strSql = "SELECT * FROM T_Courses where idCategory=" + id;		
+		try(Statement statement = connection.createStatement()){
+			try(ResultSet resultSet = statement.executeQuery(strSql)){ 			
+				while(resultSet.next()) {
+					int rsId = resultSet.getInt(1);	
+					String rsName = resultSet.getString(2);
+					String rsDescription = resultSet.getString(3);
+					double rsDuration = resultSet.getDouble(4);	
+					String rsMode = resultSet.getString(5);
+					double rsPrice = resultSet.getDouble(6);	
+					courses.add((new Course(rsId,rsName,rsDescription, rsDuration, rsMode,rsPrice)));					
+				}	
+			}
+		} catch (SQLException e) {
+			logger.severe("pb sql sur l'affichage des formations par catégories " + e.getMessage());
+		}			
+		return courses;
+	}
+	public ArrayList<Course> readAllByMode(String mode) {
+		ArrayList<Course> courses = new ArrayList<Course>();
+		String strSql = "SELECT * FROM T_Courses where mode=" + "'" + mode + "'";		
+		try(Statement statement = connection.createStatement()){
+			try(ResultSet resultSet = statement.executeQuery(strSql)){ 			
+				while(resultSet.next()) {
+					int rsId = resultSet.getInt(1);	
+					String rsName = resultSet.getString(2);
+					String rsDescription = resultSet.getString(3);
+					double rsDuration = resultSet.getDouble(4);	
+					String rsMode = resultSet.getString(5);
+					double rsPrice = resultSet.getDouble(6);	
+					courses.add((new Course(rsId,rsName,rsDescription, rsDuration, rsMode,rsPrice)));					
+				}	
+			}
+		} catch (SQLException e) {
+			logger.severe("pb sql sur l'affichage des formations par catégories " + e.getMessage());
+		}			
+		return courses;
+	}
+	
+	public ArrayList<Course> searchByWord(String word) {
+		ArrayList<Course> courses = new ArrayList<Course>();
+		String strSql = "SELECT * FROM T_Courses where name like '%" + word + "%'";		
 		try(Statement statement = connection.createStatement()){
 			try(ResultSet resultSet = statement.executeQuery(strSql)){ 			
 				while(resultSet.next()) {
