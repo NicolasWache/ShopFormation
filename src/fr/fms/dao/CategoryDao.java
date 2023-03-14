@@ -1,6 +1,7 @@
 package fr.fms.dao;
 
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +12,14 @@ public class CategoryDao implements Dao<Category>{
 
 	@Override
 	public boolean create(Category obj) {
-		// TODO Auto-generated method stub
+		String str = "INSERT INTO T_Categories (CatName, Description) VALUES (?,?);";	
+		try (PreparedStatement ps = connection.prepareStatement(str)){
+			ps.setString(1, obj.getName());
+			ps.setString(2, obj.getDescription());
+			if( ps.executeUpdate() == 1)	return true;
+		} catch (SQLException e) {
+			logger.severe("pb sql sur la création d'une formation " + e.getMessage());
+		} 	
 		return false;
 	}
 
@@ -29,13 +37,28 @@ public class CategoryDao implements Dao<Category>{
 
 	@Override
 	public boolean update(Category obj) {
-		// TODO Auto-generated method stub
+		String str = "UPDATE T_Categories set CatName=? , Description=? where idCategory=?;";	
+		try (PreparedStatement ps = connection.prepareStatement(str)){				
+			ps.setString(1, obj.getName());
+			ps.setString(2, obj.getDescription());
+			ps.setInt(3, obj.getId());
+			if( ps.executeUpdate() == 1)	return true;
+			return true;
+		} catch (SQLException e) {
+			logger.severe("pb sql sur la mise à jour d'une formation " + e.getMessage());
+		} 	
 		return false;
 	}
 
 	@Override
 	public boolean delete(Category obj) {
-		// TODO Auto-generated method stub
+		try (Statement statement = connection.createStatement()){
+			String str = "DELETE FROM T_Categories where IdCategory=" + obj.getId() + ";";									
+			statement.executeUpdate(str);		
+			return true;
+		} catch (SQLException e) {
+			logger.severe("pb sql sur la suppression d'une formation " + e.getMessage());
+		} 	
 		return false;
 	}
 

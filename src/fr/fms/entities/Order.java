@@ -20,6 +20,12 @@ public class Order {
 		this.idCustomer = idCustomer;
 	}
 	
+	public Order(int idOrder, double amount, Date date) {
+		this.idOrder = idOrder;
+		this.amount = amount;
+		this.date = date;
+	}
+	
 	public Order(double amount, Date date, int idCustomer) {
 		this.amount = amount;
 		this.date = date;

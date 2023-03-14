@@ -7,6 +7,8 @@ package fr.fms.business;
 
 import java.util.ArrayList;
 import fr.fms.entities.Course;
+import fr.fms.entities.Customer;
+import fr.fms.entities.Order;
 import fr.fms.entities.Category;
 
 public interface IBusiness {	
@@ -46,7 +48,7 @@ public interface IBusiness {
 	/**
 	 * méthode renvoie l'article correspondant à l'id
 	 * @param id de l'article à renvoyer
-	 * @return article correspondant si trouvé, null sinon
+	 * @return Course correspondant si trouvé, null sinon
 	 */
 	public Course readOneCourse(int id);	
 	
@@ -55,6 +57,13 @@ public interface IBusiness {
 	 * @return Liste de catégories en base
 	 */
 	public ArrayList<Category> readCategories();
+	
+	/**
+	 * méthode qui renvoi une seule categorie
+	 * @return Liste de catégories en base
+	 * @return Category correspondant si trouvé, null sinon
+	 */
+	public Category readOneCategory(int id);
 	
 	/**
 	 * méthode qui renvoi tous les articles d'une catégorie
@@ -76,4 +85,61 @@ public interface IBusiness {
 	 * @return Liste d'articles
 	 */
 	public ArrayList<Course> searchCoursesByWord(String word);
+	/**
+	 * méthode qui renvoi un booléen pour savoir si l'utilisateur est Admin
+	 * @param id du user
+	 * @return True = IsAdmin / False = IsNotAdmin
+	 */
+	public boolean isAdmin (int id);
+	
+	/**
+	 * méthode qui ajoute une formation
+	 * @param Object Course Nouvelle formation
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean addNewCourse (Course course);
+	
+	/**
+	 * méthode qui supprime une formation
+	 * @param Object Course
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean deleteCourse (Course course);
+	
+	/**
+	 * méthode qui update une formation
+	 * @param Object Course
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean updateCourse (Course course);
+	
+	/**
+	 * méthode qui ajoute une Categorie
+	 * @param Object Category 
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean addNewCategory (Category category);
+	
+	/**
+	 * méthode qui supprime une Catégorie
+	 * @param Object Category
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean deleteCategory (Category category);
+	
+	/**
+	 * méthode qui update une catégorie
+	 * @param Object Category
+	 * @return True si l'opération s'est bien deroulée. False si erreur
+	 */
+	public boolean updateCategory (Category category);
+	
+	/**
+	 * méthode qui permet de consulter les commandes d'un seul client
+	 * @param id du client
+	 * @return objet Order
+	 */
+	public Order consultOneOrder(int id);
+	
+	public ArrayList<Customer> consultCustomer ();
 }

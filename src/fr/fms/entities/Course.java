@@ -12,19 +12,19 @@ public class Course {
 	private double duration;
 	private String mode;
 	private double price;
-	private int category;
+	private int idCategory;
 	private int quantity=1;
 	
 	public static final int MAX_STRING_LENGTH = 20;
 	
-	public Course(int id, String name, String description, double duration, String mode, double price, int category) {
+	public Course(int id, String name, String description, double duration, String mode, double price, int idCategory) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.duration = duration;
 		this.mode = mode;
 		this.price = price;
-		this.category = category;
+		this.idCategory = idCategory;
 	}
 	
 	public Course(int id, String name, String description, double duration, String mode, double price) {
@@ -36,18 +36,19 @@ public class Course {
 		this.price = price;
 	}
 	
-	public Course(String name, String description, double duration, String mode, double price) {
+	public Course(String name, String description, double duration, String mode, double price, int idCategory) {
 		this.id = 0;
 		this.name=name;
 		this.description = description;
 		this.duration = duration;
 		this.mode = mode;
 		this.price = price;
+		this.idCategory = idCategory;
 	}	
 
 	@Override
 	public String toString() {
-		return centerString(String.valueOf(id)) + centerString(name) + centerString(description) + centerString(String.valueOf(duration)) + centerString(mode) + centerString(String.valueOf(price));
+		return centerString(String.valueOf(id)) + centerString(name) + centerString(description) + centerString(String.valueOf(duration)) + centerString(mode) + centerString(String.valueOf(price) + centerString(String.valueOf(idCategory)));
 	}
 	
 	public static String centerString(String str) {
@@ -90,12 +91,12 @@ public class Course {
 		this.price = price;
 	}
 
-	public int getCategory() {
-		return category;
+	public int getidCategory() {
+		return idCategory;
 	}
 
-	public void setCategory(int category) {
-		this.category = category;
+	public void setCategory(int idCategory) {
+		this.idCategory = idCategory;
 	}
 
 	public String getName() {

@@ -14,6 +14,8 @@ import fr.fms.dao.CategoryDao;
 import fr.fms.dao.CustomerDao;
 import fr.fms.dao.Dao;
 import fr.fms.dao.DaoFactory;
+import fr.fms.dao.OrderDao;
+import fr.fms.dao.UserDao;
 import fr.fms.entities.Course;
 import fr.fms.entities.Category;
 import fr.fms.entities.Customer;
@@ -122,5 +124,51 @@ public class IBusinessImpl implements IBusiness {
 	@Override
 	public ArrayList<Course> searchCoursesByWord(String word) {
 		return ((CourseDao) courseDao).searchByWord(word);
+	}
+	@Override
+	public boolean isAdmin (int id) {
+		return ((UserDao) userDao).isAdmin(id);
+	}
+
+	@Override
+	public boolean addNewCourse(Course course) {
+		return ((CourseDao) courseDao).create(course);	
+	}
+
+	@Override
+	public boolean deleteCourse(Course course) {
+		return ((CourseDao) courseDao).delete(course);
+		
+	}
+
+	@Override
+	public boolean updateCourse(Course course) {
+		return ((CourseDao) courseDao).update(course);
+		
+	}
+
+	@Override
+	public boolean addNewCategory(Category category) {
+		return ((CategoryDao) categoryDao).create(category);
+	}
+
+	@Override
+	public boolean deleteCategory(Category category) {
+		return ((CategoryDao) categoryDao).delete(category);
+	}
+
+	@Override
+	public boolean updateCategory(Category category) {
+		return ((CategoryDao) categoryDao).update(category);
+	}
+
+	@Override
+	public Order consultOneOrder(int id) {
+		return ((OrderDao) orderDao).read(id);
+	}
+
+	@Override
+	public ArrayList<Customer> consultCustomer() {
+		return customerDao.readAll();
 	}
 }

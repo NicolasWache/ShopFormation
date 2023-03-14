@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import fr.fms.entities.Category;
 import fr.fms.entities.Order;
 
 public class OrderDao implements Dao<Order> {
@@ -31,7 +32,13 @@ public class OrderDao implements Dao<Order> {
 
 	@Override
 	public Order read(int id) {
-		// TODO Auto-generated method stub
+		try (Statement statement = connection.createStatement()){
+			String str = "SELECT * FROM T_Orders where IdCustomer=" + id + ";";									
+			ResultSet rs = statement.executeQuery(str);
+			if(rs.next()) return new Order(rs.getInt(1) , rs.getDouble(2) , rs.getDate(3));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 	
 		return null;
 	}
 

@@ -32,12 +32,12 @@ CREATE TABLE T_Customers (
 	firstName				varchar(30)	NOT NULL,
 	email 					varchar(30)	NOT NULL unique,
 	phone 					varchar(20)	,
-	address					varchar(50)	,
+	address					varchar(100)	,
 	idUser					int(4)		NOT NULL,
 	FOREIGN KEY (idUser)	REFERENCES T_Users(idUser)
 ) ENGINE = InnoDB;
 
-INSERT INTO T_Customers (IDCustomer, name, firstName, email, phone, address, idUser) VALUES ( 1, 'Wache'     ,	'Nicolas', 'wache@mail.com', '0658585858', '150 route de la rosalie 40390 Labenne', 1  );
+INSERT INTO T_Customers (IDCustomer, name, firstName, email, phone, address, idUser) VALUES ( 1, 'Wache'     ,	'Nicolas', 'wache@mail.com', '0658585858', '150 route de la rosalie', 1  );
 -- -----------------------------------------------------------------------------
 -- - Construction de la table des Rôles	                                     ---
 -- -----------------------------------------------------------------------------

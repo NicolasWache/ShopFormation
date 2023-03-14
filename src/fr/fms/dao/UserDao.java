@@ -114,4 +114,19 @@ public class UserDao implements Dao<User> {
 		} 	
 		return null;
 	}
+	
+	public boolean isAdmin (int id) {
+		String str = "SELECT * FROM T_User_Roles where IdRole=? AND IdUser=?;";
+		try (PreparedStatement ps = connection.prepareStatement(str)){
+			ps.setInt(1, 1);	
+			ps.setInt(2, id);	
+			try (ResultSet rs = ps.executeQuery()){
+				if(rs.next()) 
+					return true;
+				}
+		} catch (SQLException e) {
+			System.out.println("Vous n'etes pas un Administrateur");
+		} 	
+		return false;
+	}
 }

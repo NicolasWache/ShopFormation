@@ -30,7 +30,7 @@ public class CourseDao implements Dao<Course> {
 			ps.setDouble(3, obj.getDuration());
 			ps.setString(4, obj.getMode());
 			ps.setDouble(5, obj.getPrice());	
-			ps.setInt(6, obj.getCategory());
+			ps.setInt(6, obj.getidCategory());
 			if( ps.executeUpdate() == 1)	return true;
 		} catch (SQLException e) {
 			logger.severe("pb sql sur la création d'une formation " + e.getMessage());
@@ -43,7 +43,7 @@ public class CourseDao implements Dao<Course> {
 		try (Statement statement = connection.createStatement()){
 			String str = "SELECT * FROM T_Courses where IdCourse=" + id + ";";									
 			ResultSet rs = statement.executeQuery(str);
-			if(rs.next()) return new Course(rs.getInt(1) , rs.getString(2) , rs.getString(3) , rs.getDouble(4), rs.getString(5), rs.getDouble(6));
+			if(rs.next()) return new Course(rs.getInt(1) , rs.getString(2) , rs.getString(3) , rs.getDouble(4), rs.getString(5), rs.getDouble(6), rs.getInt(7));
 		} catch (SQLException e) {
 			logger.severe("pb sql sur la lecture d'une formation" + e.getMessage());
 		} 	
@@ -52,14 +52,14 @@ public class CourseDao implements Dao<Course> {
 
 	@Override
 	public boolean update(Course obj) {
-		String str = "UPDATE T_Courses set Name=? , Description=? , Duration =? , Mode= ?, UnitaryPrice = ? where idCourse=?;";	
+		String str = "UPDATE T_Courses set Name=? , Description=? , Duration =? , Mode= ?, UnitaryPrice = ?, IdCategory = ? where idCourse=?;";	
 		try (PreparedStatement ps = connection.prepareStatement(str)){				
 			ps.setString(1, obj.getName());
 			ps.setString(2, obj.getDescription());
 			ps.setDouble(3, obj.getDuration());
 			ps.setString(4, obj.getMode());
 			ps.setDouble(5, obj.getPrice());	
-			ps.setInt(6, obj.getCategory());	
+			ps.setInt(6, obj.getidCategory());	
 			ps.setInt(7, obj.getId());
 			if( ps.executeUpdate() == 1)	return true;
 			return true;
@@ -72,7 +72,7 @@ public class CourseDao implements Dao<Course> {
 	@Override
 	public boolean delete(Course obj) {
 		try (Statement statement = connection.createStatement()){
-			String str = "DELETE FROM T_ACourses where IdCourse=" + obj.getId() + ";";									
+			String str = "DELETE FROM T_Courses where IdCourse=" + obj.getId() + ";";									
 			statement.executeUpdate(str);		
 			return true;
 		} catch (SQLException e) {

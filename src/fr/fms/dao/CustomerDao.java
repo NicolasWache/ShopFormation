@@ -71,8 +71,8 @@ public class CustomerDao implements Dao<Customer> {
 					String fisrtName = resultSet.getString(3);
 					String email = resultSet.getString(4);
 					String tel = resultSet.getString(5);
-					String address = resultSet.getString(5);
-					int idUser = resultSet.getInt(6);
+					String address = resultSet.getString(6);
+					int idUser = resultSet.getInt(7);
 					customers.add((new Customer(idCustomer,name,fisrtName,email,tel,address,idUser)));						
 				}	
 			}

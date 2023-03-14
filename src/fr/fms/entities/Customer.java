@@ -101,6 +101,6 @@ public class Customer {
 	}
 	@Override
 	public String toString() {
-		return " " + name + " , " + firstName + " , " + email + " , " + phone + " , " + address;
+		return " " + idCustomer+ " , " + name + " , " + firstName + " , " + email + " , " + phone + " , " + address;
 	}
 }
