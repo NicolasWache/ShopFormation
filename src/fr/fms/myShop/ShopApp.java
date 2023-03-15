@@ -6,18 +6,13 @@
  */
 package fr.fms.myShop;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import fr.fms.authentication.Authenticate;
 import fr.fms.business.IBusinessImpl;
-import fr.fms.dao.CategoryDao;
-import fr.fms.dao.CourseDao;
-import fr.fms.dao.UserDao;
 import fr.fms.entities.Course;
 import fr.fms.entities.Category;
 import fr.fms.entities.Customer;
-import fr.fms.entities.User;
 
 public class ShopApp {
 	private static Scanner scan = new Scanner(System.in); 
@@ -33,22 +28,37 @@ public class ShopApp {
 	private static final String COLUMN_DURATION = "DUREE";
 	private static final String COLUMN_MODE = "MODE";
 	private static final String COLUMN_PRICE = "PRIX";
-
+	private static final String COLUMN_ORDER_NUMBER = "NUMERO DE COMMANDE";
+	private static final String COLUMN_ID_COURSE = "IDENTIFIANT DU COURS";
+	private static final String COLUMN_QUANTITY = "QUANTITE";
 
 	private static int idUser = 0;
 	private static String login = null; 
-	private static Boolean isAdmin = false;
+	private static boolean isAdmin = false;
+	private static boolean isConnected = false;
 
 	public static void main(String[] args) {
-		System.out.println("Bonjour et bienvenue dans ma boutique, voici la liste de formations en stock\n");
+		System.out.println(" ____   _                                                       _                     _____  _                    ______                             ");
+		System.out.println("|  _ \\ (_)                                                     | |                   / ____|| |                  |  ____|                            ");
+		System.out.println("| |_) | _   ___  _ __ __   __ ___  _ __   _   _   ___      ___ | |__    ___  ____   | (___  | |__    ___   _ __  | |__  ___   _ __  _ __ ___    __ _ ");
+		System.out.println("|  _ < | | / _ \\| '_ \\\\ \\ / // _ \\| '_ \\ | | | | / _ \\    / __|| '_ \\  / _ \\|_  /    \\___ \\ | '_ \\  / _ \\ | '_ \\ |  __|/ _ \\ | '__|| '_ ` _ \\  / _` |");
+		System.out.println("| |_) || ||  __/| | | |\\ V /|  __/| | | || |_| ||  __/   | (__ | | | ||  __/ / /     ____) || | | || (_) || |_) || |  | (_) || |   | | | | | || (_| |");
+		System.out.println("|____/ |_| \\___||_| |_| \\_/  \\___||_| |_| \\__,_| \\___|    \\___||_| |_| \\___|/___|   |_____/ |_| |_| \\___/ | .__/ |_|   \\___/ |_|   |_| |_| |_| \\__,_|");
+		System.out.println("                                                              						  | |");  
+		System.out.println("                                                                                   			  |_|");
+		  
+		  
+		  
+		                                        
+		System.out.println("******************************** Bonjour et bienvenue dans notre  boutique, voici la liste des formations disponibles ********************************\n ");
 		userMenu();
 	}
 
 	/**
-	 * Méthode qui affiche le menu principale
+	 * Méthode qui affiche le menu principal
 	 */
 	public static void displayMenu() {	
-		if(login != null)	System.out.print(TEXT_BLUE + "Compte : " + login);
+		if(login != null)	System.out.print(TEXT_BLUE + "Bienvenue  " + login);
 		System.out.println("\n" + "Pour réaliser une action, tapez le code correspondant");
 		System.out.println("1 : Ajouter une formation au panier");
 		System.out.println("2 : Retirer une formation du panier");
@@ -58,15 +68,22 @@ public class ShopApp {
 		System.out.println("6 : Afficher toutes les formations d'une catégorie");
 		System.out.println("7 : Afficher toutes les formations par mode d'apprentissage");
 		System.out.println("8 : Rechercher une formation par mot clés");
-		System.out.println("9 : Connexion(Deconnexion) à votre compte");
-		System.out.println("10 : Acceder à l'interface d'administration");
-		System.out.println("11 : sortir de l'application");
+		if (isConnected)
+		System.out.println("9 : Deconnexion de votre compte");
+		if (!isConnected)
+		System.out.println("9 : Connexion à votre compte");
+		System.out.println("10 : sortir de l'application");
+		if (isAdmin)
+			System.out.println("11 : Acceder à l'interface d'administration");
 	}
-	
+
+	/**
+	 * Methode qui permet de naviguer dans l'application
+	 */
 	public static void userMenu() {
 		displayCourses();
 		int choice = 0;
-		while(choice != 11) {
+		while(choice != 10) {
 			displayMenu();
 			choice = scanInt();
 			switch(choice) {
@@ -88,17 +105,17 @@ public class ShopApp {
 			break;
 			case 9 : connection();
 			break;
-			case 10 :adminInterface();
+			case 10 : System.out.println("à bientôt dans notre boutique :)");
+			break;	
+			case 11 :adminInterface();
 			break;
-			case 11 : System.out.println("à bientôt dans notre boutique :)");
-			break;					
-			default : System.out.println("veuillez saisir une valeur entre 1 et 11");
+			default : System.out.println("veuillez saisir une valeur entre 1 et 10");
 			}
 		}
 	}
 
 	/**
-	 * Méthode qui affiche toutes les formation en base en centrant le texte 
+	 * Méthode qui affiche toutes les formation en base
 	 */
 	public static void displayCourses() { 		
 		System.out.printf("%-11s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
@@ -108,9 +125,10 @@ public class ShopApp {
 	}
 
 	/**
-	 * Méthode qui affiche toutes les formation par catégorie en utilisant printf
+	 * Méthode qui affiche les formations par catégories
 	 */
 	private static void displayCoursesByCategoryId() {
+		displayCategories();
 		System.out.println("saisissez l'id de la catégorie concerné");
 		int id = scanInt();
 		Category category = business.readOneCategory(id);
@@ -131,7 +149,7 @@ public class ShopApp {
 	private static void displayCoursesByMode() {
 		System.out.println("Quelles types de formations recherchez vous ? ");
 		System.out.println("[1]- Formation en Présentiel [2]- Formation en Distanciel");
-		int id = scan.nextInt();
+		int id = scanInt();
 		switch (id) {
 		case 1:
 			System.out.println("Voici la liste des formations en Présentiel");
@@ -166,7 +184,7 @@ public class ShopApp {
 	 * Méthode qui affiche le menu Admin
 	 */
 	private static void adminMenu() {
-		
+
 		System.out.println("\n" + "Pour réaliser une action, tapez le code correspondant");
 		System.out.println("1 : Ajouter une formation");
 		System.out.println("2 : Modifier une formation");
@@ -188,10 +206,11 @@ public class ShopApp {
 			connection();
 		}
 		if (business.isAdmin(idUser)) {
+			isAdmin = true;
 			System.out.print(TEXT_RED);
 			System.out.println("Félicitation " + login +" Vous etes connecté en tant qu'administrateur");
 			int choiceAdmin = 0;
-			
+
 			while(choiceAdmin != 9) {
 				adminMenu();
 				choiceAdmin = scanInt();
@@ -200,7 +219,7 @@ public class ShopApp {
 				break;					
 				case 2 : updateCourse();
 				break;					
-				case 3 :deleteCourse();
+				case 3 : deleteCourse();
 				break;					
 				case 4 : createCategory();
 				break;						
@@ -231,30 +250,37 @@ public class ShopApp {
 		double price;
 		int category;
 		scan.nextLine();
-		System.out.println("Quel est le nom de la formation que vous souhaitez créer");
+		System.out.println("Quel est le nom de la formation que vous souhaitez créer - (Le nombre de caractères autorisés est de 30) ");
 		name = scan.nextLine();
-		System.out.println("Redigez une breve description de la formation");
+		isCorrespondToBddString(30, name);
+		System.out.println("Redigez une breve description de la formation - (Le nombre de caractères autorisés est de 70)");
 		description = scan.nextLine();
+		isCorrespondToBddString(70, description);
 		System.out.println("Quelle est la durée de cette formation? (Le nombre uniquement) ");
 		duration = scan.nextDouble();
-		System.out.println("Quel est le mode de formation ? Distanciel ou Presentiel? ");
-		mode = scan.next();
+		System.out.println("Quel est le mode de formation ? Distanciel ou Presentiel? - (Seuls presentiel et distanciel sont valides) ");
+		scan.nextLine();
+		mode = scan.nextLine();
+		verifyMode(mode);
+		isCorrespondToBddString(10, mode);
 		System.out.println("Quel est le prix de la formation? (Prix uniquement)");
 		price = scan.nextDouble();
 		System.out.println("Quelle est la catégorie de la formation ?");
-		category = scan.nextInt();
+		displayCategories();
+		System.out.println("[0] Aucune catégorie");
+		category = scanInt();
 		Course course = new Course(name, description, duration, mode, price, category);
 		if (business.addNewCourse(course))
-		System.out.println("La formation a été ajoutée avec succés");
+			System.out.println("La formation a été ajoutée avec succés");
 	}
-	
+
 	/**
 	 * Méthode qui permet de supprimer une  formation en BDD
 	 */
 	private static void deleteCourse() {
 		displayCourses();
 		System.out.println("Selectionnez l'ID de la formation que vous souhaitez supprimer");
-		int idToDelete = scan.nextInt();
+		int idToDelete = scanInt();
 		Course course = business.readOneCourse(idToDelete);
 		System.out.println("Etes vous sur de vouloir supprimer la formation suivante? ");
 		System.out.printf("%-11s | %-22s | %-60s | %-10s | %-10s | %-10s  %n",COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
@@ -281,63 +307,66 @@ public class ShopApp {
 		System.out.println("[6] La category de la formation");
 		System.out.println("[7] Rien à modifier");
 	}
-	
-	
+
+
 	/**
 	 * Méthode qui permet de update une  formation en BDD
 	 */
 	private static void updateCourse() {
 		displayCourses();
 		System.out.println("Selectionnez l'ID de la formation que vous souhaitez modifier");
-		int idToUpdate = scan.nextInt();
+		int idToUpdate = scanInt();
 		Course course = business.readOneCourse(idToUpdate);
 		int choice = 0;
 		while (choice != 7) {
 			menuUpdate();
-			choice = scan.nextInt();
+			choice = scanInt();
 			scan.nextLine();
 			switch (choice) {
 			case 1: 
-				System.out.println("Veuillez entrer le nouveau nom de la formation");
+				System.out.println("Veuillez entrer le nouveau nom de la formation  - (Le nombre de caractères autorisés est de 30)" );
 				String name = scan.nextLine();
+				isCorrespondToBddString(30, name);
 				Course updateCourseName = new Course(course.getId(),name, course.getDescription(), course.getDuration(), course.getMode(), course.getPrice(), course.getidCategory());
-				 if (business.updateCourse(updateCourseName))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+				if (business.updateCourse(updateCourseName))
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 2 : 
 				System.out.println("Veuillez entrer la nouvelle description de la formation");
 				String description = scan.nextLine();
+				isCorrespondToBddString(30, description);
 				Course updateCourseDescription = new Course(course.getId(),course.getName(), description, course.getDuration(), course.getMode(), course.getPrice(), course.getidCategory());
 				if (business.updateCourse(updateCourseDescription))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 3:
 				System.out.println("Veuillez entrer la nouvelle durée de la formation");
 				double duration = scan.nextDouble();
 				Course updateCourseDuration = new Course(course.getId(),course.getName(), course.getDescription(), duration, course.getMode(), course.getPrice(), course.getidCategory());
 				if (business.updateCourse(updateCourseDuration))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 4:
 				System.out.println("Veuillez entrer le nouveau mode d'apprentissage de la formation");
 				String mode = scan.next();
+				isCorrespondToBddString(10, mode);
 				Course updateCourseMode = new Course(course.getId(),course.getName(), course.getDescription(), course.getDuration(), mode , course.getPrice(), course.getidCategory());
 				if (business.updateCourse(updateCourseMode))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 5:
 				System.out.println("Veuillez entrer le nouveau prix de la formation");
 				double price = scan.nextDouble();
 				Course updateCoursePrice = new Course(course.getId(),course.getName(), course.getDescription(), course.getDuration(), course.getMode(), price, course.getidCategory());
 				if (business.updateCourse(updateCoursePrice))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 6:
 				System.out.println("Veuillez entrer la nouvelle categorie de la formation");
-				int category = scan.nextInt();
+				int category = scanInt();
 				Course updateCourseCategory = new Course(course.getId(),course.getName(), course.getDescription(), course.getDuration(), course.getMode(), course.getPrice(), category);
 				if (business.updateCourse(updateCourseCategory))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 7: adminMenu();
 			break;
@@ -345,7 +374,7 @@ public class ShopApp {
 			}
 		}
 	}
-	
+
 	/**
 	 * Méthode qui crée une catégorie
 	 */
@@ -359,16 +388,16 @@ public class ShopApp {
 		description = scan.nextLine();
 		Category newCat = new Category(name, description);
 		if (business.addNewCategory(newCat))
-		System.out.println("La formation a été ajoutée avec succés");
+			System.out.println("La formation a été ajoutée avec succés");
 	}
-	
+
 	/**
-	 * Méthode qui permet de update une  formation en BDD
+	 * Méthode qui permet de update une  catégorie en BDD
 	 */
 	private static void updateCategory() {
 		displayCategories();
 		System.out.println("Selectionnez l'ID de la catégorie que vous souhaitez modifier");
-		int idToUpdate = scan.nextInt();
+		int idToUpdate = scanInt();
 		Category category = business.readOneCategory(idToUpdate);
 		int choice = 0;
 		while (choice != 3) {
@@ -376,51 +405,51 @@ public class ShopApp {
 			System.out.println("[1] Le Nom de la Formation");
 			System.out.println("[2] La Description de la Formation");
 			System.out.println("[3] Rien à modifier");
-			choice = scan.nextInt();
+			choice = scanInt();
 			scan.nextLine();
 			switch (choice) {
 			case 1: 
 				System.out.println("Veuillez entrer le nouveau nom de la Catégorie");
 				String name = scan.nextLine();
 				Category updateCategoryName = new Category(category.getId(),name, category.getDescription());
-				 if (business.updateCategory(updateCategoryName))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+				if (business.updateCategory(updateCategoryName))
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
 			case 2 : 
 				System.out.println("Veuillez entrer la nouvelle description de la formation");
 				String description = scan.nextLine();
 				Category updateCategoryDescription = new Category(category.getId(),category.getName(), description);
-				 if (business.updateCategory(updateCategoryDescription))
-					 System.out.println("La mise à jour à bien été prise en compte ");
+				if (business.updateCategory(updateCategoryDescription))
+					System.out.println("La mise à jour à bien été prise en compte ");
 				break;
-			
+
 			case 3: adminMenu();
 			break;
 			default: System.out.println("Veuillez saisir un chiffre entre 1 et 7");
 			}
 		}
 	}
-	
+
 	/**
-	 * Méthode qui permet de supprimer une  formation en BDD
+	 * Méthode qui permet de supprimer une catégorie en BDD
 	 */
 	private static void deleteCategory() {
 		displayCategories();
 		System.out.println("Selectionnez l'ID de la formation que vous souhaitez supprimer");
-		int idToDelete = scan.nextInt();
+		int idToDelete = scanInt();
 		Category category = business.readOneCategory(idToDelete);
 		System.out.println("Etes vous sur de vouloir supprimer la catégorie suivante ? ");
 		System.out.println(category);
 		System.out.println("Oui ou non ? ");
 		String response = scan.next();
 		if (response.equalsIgnoreCase("oui")) {
-			if (business.deleteCategory(category));
+			if (business.updateBeforeDeleteCategory(idToDelete)  & business.deleteCategory(category));
 			System.out.println("La formation a été supprimée avec succés");
 		} else {
 			adminMenu();
 		}	
 	}
-	
+
 	/**
 	 * Méthode qui affiche toutes les catégories
 	 */
@@ -428,22 +457,24 @@ public class ShopApp {
 		System.out.println(Category.centerString(COLUMN_ID) + Category.centerString(COLUMN_NAME) + Category.centerString(COLUMN_DESCRIPTION));
 		business.readCategories().forEach(System.out::println);		
 	}
-	
+
 	/**
 	 * Méthode qui les commandes d'un client
 	 */
 	private static void displayOrderbyId() {
 		business.consultCustomer().forEach(System.out::println);
 		System.out.println("De Quel client souhaitez vous consulter les commandes? Saisissez l'ID ");
-		int clientChoice = scan.nextInt();
-		business.consultOneOrder(clientChoice);
+		int clientChoice = scanInt();
+		System.out.println("CONTENU DES COMMANDES :");
+		System.out.printf("%-20s | %-22s | %-20s | %-15s %n",COLUMN_ORDER_NUMBER,COLUMN_ID_COURSE,COLUMN_QUANTITY,COLUMN_PRICE);
+		business.consultOrderById(clientChoice).forEach( a-> business.readOrderItem(a.getIdOrder()).forEach(b -> System.out.printf("%-20s | %-22s | %-20s | %-15s %n",b.getIdOrder(),b.getIdCourse(),b.getQuantity(),b.getUnitaryPrice()  )));		
 	}
 
 	/**
 	 * Méthode qui supprime une formation du panier
 	 */
 	public static void removeCourse() {
-		System.out.println("Selectionner l'id de la formation à supprimer du panier");
+		displayCart(false);
 		int id = scanInt();
 		business.rmFromCart(id);
 		displayCart(false);
@@ -453,6 +484,7 @@ public class ShopApp {
 	 * Méthode qui ajoute une formation au panier
 	 */
 	public static void addCourse() {
+		displayCourses();
 		System.out.println("Selectionner l'id de la formation à ajouter au panier");
 		int id = scanInt();
 		Course course = business.readOneCourse(id);
@@ -553,6 +585,8 @@ public class ShopApp {
 				System.out.println("A bientôt " + login + TEXT_RESET);
 				login = null;
 				idUser = 0;
+				isAdmin =false;
+				isConnected = false;
 			}				
 		}
 		else {
@@ -565,14 +599,23 @@ public class ShopApp {
 			if(id > 0)	{
 				login = log;
 				idUser = id;
+				isConnected = true;
+				if (business.isAdmin(idUser))
+					isAdmin = true;
 				System.out.print(TEXT_BLUE);
 			}
 			else {
 				System.out.println("login ou password incorrect");
-				System.out.println("Nouvel utilisateur, pour créer un compte, tapez ok");
-				String ok = scan.next();
-				if(ok.equalsIgnoreCase("ok")) {
-					newUser();
+				System.out.println("Souhaitez vous [1] reessayer ou [2] creer un compte");
+				int choice = scanInt();
+				if (choice ==1 ) {
+					connection();
+				} else {
+					System.out.println("Nouvel utilisateur, pour créer un compte, tapez ok");
+					String ok = scan.next();
+					if(ok.equalsIgnoreCase("ok")) {
+						newUser();
+					}
 				}
 			}
 		}
@@ -610,6 +653,33 @@ public class ShopApp {
 			scan.next();
 		}
 		return scan.nextInt();
+	}
+	
+	public static int isCorrespondToBddInt (int maxValue, int userValue) {
+		while (userValue > maxValue || userValue< 0) {
+			System.out.println("Votre saisie est erronée, veuillez réessayer ");
+			userValue=scanInt();
+		}
+			
+		return userValue;
+	}
+	
+	public static String isCorrespondToBddString( int maxValue, String userValue) {
+		while (userValue.length() > maxValue ) {
+			System.out.println(userValue.length());
+			System.out.println("Votre saisie est erronée, veuillez réessayer ");
+			userValue =scan.nextLine();
+			
+		}
+		return userValue;
+	}
+	
+	public static String verifyMode (String userValue) {
+		while (userValue.equalsIgnoreCase("presentiel") ||userValue.equalsIgnoreCase("distanciel")) {
+			System.out.println("Votre saisie ne corresponds pas à Distanciel ou Présentiel ");
+			userValue= scan.nextLine();
+		}
+		return userValue;
 	}
 
 	public static boolean isValidEmail(String email) {

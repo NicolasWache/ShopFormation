@@ -59,4 +59,21 @@ public class OrderDao implements Dao<Order> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	public ArrayList<Order> readOrderById(int id) {
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "select * from T_Orders WHERE IdCustomer="+ id + ";";
+		try(Statement statement = connection.createStatement()){
+			try(ResultSet resultSet = statement.executeQuery(sql)){
+				while(resultSet.next()) {
+					orders.add(new Order(resultSet.getInt(1), resultSet.getDouble(2), resultSet.getDate(3)));
+				}
+				return orders;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return null;
+	}
 }

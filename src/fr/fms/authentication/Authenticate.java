@@ -42,11 +42,17 @@ public class Authenticate {
 	public Customer existCustomerByEmail(String email) {
 		return ((CustomerDao)customerDao).findCustomerByEmail(email);
 	}
-
+	/**
+	 * méthode qui crée un nouveau user en BDD
+	 * @param email & pswd
+	 */
 	public void addUser(String email, String password) {
 		userDao.create(new User(email, password));		
 	}
-
+	/**
+	 * méthode qui crée un nouveau client en BDD
+	 * @param Customer
+	 */
 	public boolean addCustomer(Customer customer) {
 		return customerDao.create(customer);		
 	}

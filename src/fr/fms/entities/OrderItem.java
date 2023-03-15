@@ -7,11 +7,9 @@ package fr.fms.entities;
 
 public class OrderItem {
 	private int idOrderItem;
-
 	private int idCourse;
 	private int quantity;
 	private double unitaryPrice;
-	
 	private int idOrder;
 
 	public OrderItem(int idOrderItem, int idCourse, int quantity, double unitaryPrice, int idOrder) {
@@ -21,6 +19,8 @@ public class OrderItem {
 		this.unitaryPrice = unitaryPrice;
 		this.idOrder = idOrder;
 	}
+	
+	
 
 	public int getIdOrderItem() {
 		return idOrderItem;
@@ -60,5 +60,13 @@ public class OrderItem {
 
 	public void setIdOrder(int idOrder) {
 		this.idOrder = idOrder;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Numéro de commande: " + idOrder + ", Identifiant du cours acheté: " + idCourse + ", Quantité: " + quantity
+				+ "Prix =" + unitaryPrice  ;
 	}
 }

@@ -29,8 +29,12 @@ public class CourseDao implements Dao<Course> {
 			ps.setString(2, obj.getDescription());
 			ps.setDouble(3, obj.getDuration());
 			ps.setString(4, obj.getMode());
-			ps.setDouble(5, obj.getPrice());	
-			ps.setInt(6, obj.getidCategory());
+			ps.setDouble(5, obj.getPrice());
+			if (obj.getidCategory() == 0) {
+				ps.setNull(6, 0);
+			} else {
+				ps.setInt(6, obj.getidCategory());
+			}
 			if( ps.executeUpdate() == 1)	return true;
 		} catch (SQLException e) {
 			logger.severe("pb sql sur la création d'une formation " + e.getMessage());
@@ -166,5 +170,16 @@ public class CourseDao implements Dao<Course> {
 			logger.severe("pb sql sur l'affichage des formations par catégories " + e.getMessage());
 		}			
 		return courses;
+	}
+	
+	public boolean updateBeforeDeleteCategory(int id) {
+		try (Statement statement = connection.createStatement()){
+			String str = "UPDATE T_Courses set IdCategory =NULL  where idCategory=" + id + ";";									
+			statement.executeUpdate(str);		
+			return true;
+		} catch (SQLException e) {
+			logger.severe("pb sql sur la suppression d'une formation " + e.getMessage());
+		} 	
+		return false;
 	}
 }

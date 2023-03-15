@@ -1,9 +1,13 @@
 package fr.fms.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
+import fr.fms.entities.Category;
+import fr.fms.entities.Order;
 import fr.fms.entities.OrderItem;
 
 public class OrderItemDao implements Dao<OrderItem> {
@@ -25,9 +29,20 @@ public class OrderItemDao implements Dao<OrderItem> {
 		return false;
 	}
 
-	@Override
-	public OrderItem read(int id) {
-		// TODO Auto-generated method stub
+	
+	public ArrayList<OrderItem> readAllbyId(int id) {
+		ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
+		String sql = "SELECT * FROM T_Order_Items where IdOrder=" + id + ";";
+		try(Statement statement = connection.createStatement()){
+			try(ResultSet rs = statement.executeQuery(sql)){
+				while(rs.next()) {
+					orderItems.add(new OrderItem(rs.getInt(1) , rs.getInt(2) , rs.getInt(3),rs.getDouble(4),rs.getInt(5)));
+				}
+				return orderItems;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 		return null;
 	}
 
@@ -48,5 +63,14 @@ public class OrderItemDao implements Dao<OrderItem> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public OrderItem read(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

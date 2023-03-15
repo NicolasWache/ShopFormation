@@ -15,6 +15,7 @@ import fr.fms.dao.CustomerDao;
 import fr.fms.dao.Dao;
 import fr.fms.dao.DaoFactory;
 import fr.fms.dao.OrderDao;
+import fr.fms.dao.OrderItemDao;
 import fr.fms.dao.UserDao;
 import fr.fms.entities.Course;
 import fr.fms.entities.Category;
@@ -31,7 +32,7 @@ public class IBusinessImpl implements IBusiness {
 	private Dao<Order> orderDao = DaoFactory.getOrderDao();
 	private Dao<OrderItem> orderItemDao = DaoFactory.getOrderItemDao();
 	private Dao<Customer> customerDao = DaoFactory.getCustomerDao();
-	
+
 	public IBusinessImpl() {
 		this.cart = new HashMap<Integer,Course>();
 	}
@@ -65,8 +66,8 @@ public class IBusinessImpl implements IBusiness {
 			double total = getTotal(); 
 			Order order = new Order(total, new Date(), idCustomer);
 			if(orderDao.create(order)) {	
-				for(Course article : cart.values()) {	
-					orderItemDao.create(new OrderItem(0, article.getId(), article.getQuantity(), article.getPrice(), order.getIdOrder()));
+				for(Course course : cart.values()) {	
+					orderItemDao.create(new OrderItem(0, course.getId(), course.getQuantity(), course.getPrice(), order.getIdOrder()));
 				}
 				return order.getIdOrder();
 			}
@@ -78,7 +79,7 @@ public class IBusinessImpl implements IBusiness {
 	public ArrayList<Course> readCourses() {
 		return courseDao.readAll();
 	}
-	
+
 	@Override
 	public ArrayList<Category> readCategories() {
 		return categoryDao.readAll();
@@ -107,7 +108,7 @@ public class IBusinessImpl implements IBusiness {
 	public boolean isCartEmpty() {
 		return cart.isEmpty();
 	}
-	
+
 	public void clearCart() {
 		cart.clear();		
 	}
@@ -138,13 +139,13 @@ public class IBusinessImpl implements IBusiness {
 	@Override
 	public boolean deleteCourse(Course course) {
 		return ((CourseDao) courseDao).delete(course);
-		
+
 	}
 
 	@Override
 	public boolean updateCourse(Course course) {
 		return ((CourseDao) courseDao).update(course);
-		
+
 	}
 
 	@Override
@@ -163,12 +164,22 @@ public class IBusinessImpl implements IBusiness {
 	}
 
 	@Override
-	public Order consultOneOrder(int id) {
-		return ((OrderDao) orderDao).read(id);
+	public ArrayList<Order> consultOrderById(int id) {
+		return ((OrderDao) orderDao).readOrderById(id);
 	}
 
 	@Override
 	public ArrayList<Customer> consultCustomer() {
 		return customerDao.readAll();
+	}
+
+	@Override
+	public ArrayList<OrderItem> readOrderItem(int id) {
+		return ((OrderItemDao) orderItemDao).readAllbyId(id);
+	}
+
+	@Override
+	public boolean updateBeforeDeleteCategory(int id) {
+		return ((CourseDao)courseDao).updateBeforeDeleteCategory(id);
 	}
 }
