@@ -10,6 +10,7 @@ import fr.fms.entities.Course;
 import fr.fms.entities.Customer;
 import fr.fms.entities.Order;
 import fr.fms.entities.OrderItem;
+import fr.fms.entities.User;
 import fr.fms.entities.Category;
 
 public interface IBusiness {	
@@ -157,4 +158,10 @@ public interface IBusiness {
 	public ArrayList<OrderItem> readOrderItem(int id);
 	
 	public boolean updateBeforeDeleteCategory (int id);
+	
+	public boolean addAdmin (int id);
+	
+	public boolean deleteAdmin (int id);
+	
+	public ArrayList<User> readAllUsers();
 }

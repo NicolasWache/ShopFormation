@@ -52,9 +52,9 @@ INSERT INTO T_Roles (IdRole, RoleName) VALUES (1, 'Admin');
 -- - Construction de la table des User_Roles,                                ---
 -- -----------------------------------------------------------------------------
 CREATE TABLE T_User_Roles (	
-	IdRole				int(4)		PRIMARY KEY, FOREIGN KEY (idRole)	REFERENCES T_Roles(idRole),
-	IdUser				int(4)      NOT NULL, 
-	FOREIGN KEY (idUser)	REFERENCES T_Users(idUser)
+	id					int(4)		PRIMARY KEY AUTO_INCREMENT,
+	IdRole				int(4)		NOT NULL,   FOREIGN KEY (idRole)	REFERENCES T_Roles(idRole),
+	IdUser				int(4)      NOT NULL,	FOREIGN KEY (idUser)	REFERENCES T_Users(idUser)
 ) ENGINE = InnoDB;
 
 INSERT INTO T_User_Roles (IdRole, IdUser) VALUES (1,1);

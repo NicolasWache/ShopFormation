@@ -129,4 +129,32 @@ public class UserDao implements Dao<User> {
 		} 	
 		return false;
 	}
+	
+	public boolean addAdmin(int id) {
+		String str = "INSERT INTO T_User_Roles (IdRole,IdUser) VALUES (?,?);";
+		System.out.println(id);
+		try (PreparedStatement ps = connection.prepareStatement(str)){
+			ps.setInt(1, 1);
+			ps.setInt(2, id);			
+			if( ps.executeUpdate() == 1)	return true;				
+		} catch (SQLException e) {
+			logger.severe("pb sql sur la création d'un utilisateur ");
+			e.getMessage();
+			e.printStackTrace();
+		} 				
+		return false;
+	}
+	
+	public boolean deleteAdmin(int id) {
+		try (Statement statement = connection.createStatement()){
+			String str = "DELETE FROM  T_User_Roles where IdUser=" +id + ";";									
+			statement.executeUpdate(str);		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

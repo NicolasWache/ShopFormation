@@ -24,12 +24,14 @@ public class ShopApp {
 	public static final String TEXT_RESET = "\u001B[0m";
 	public static final String ANSI_BOLD = "\u001B[1m";
 	public static final String TEXT_GREEN = "\u001B[32m";
+	public static final String TEXT_WHITE = "\u001b[37m";
 	public static final String TEXT_BG_YELLOW ="\u001b[43;1m";
 	public static final String TEXT_BG_RED ="\u001b[41;1m";
 	public static final String TEXT_BG_GREEN ="\u001b[42;1m";	
 	private static final String COLUMN_ID = "IDENTIFIANT";
 	private static final String COLUMN_DESCRIPTION = "DESCRIPTION";
 	private static final String COLUMN_NAME = "Nom";
+	private static final String COLUMN_LOGIN = "Login";
 	private static final String COLUMN_DURATION = "DUREE";
 	private static final String COLUMN_MODE = "MODE";
 	private static final String COLUMN_PRICE = "PRIX";
@@ -116,11 +118,11 @@ public class ShopApp {
 				break;
 				case 9 : connection();
 				break;
-				case 10 : System.out.println(TEXT_BG_YELLOW +"à bientôt dans notre boutique :)"+TEXT_RESET);
+				case 10 : System.out.println(TEXT_BG_YELLOW + TEXT_WHITE+"à bientôt dans notre boutique :)"+TEXT_RESET);
 				break;	
 				case 11 :adminInterface();
 				break;
-				default : System.out.println(TEXT_BG_RED + "veuillez saisir une valeur entre 1 et 10"+TEXT_RESET);
+				default : System.out.println(TEXT_BG_RED + TEXT_WHITE+ "veuillez saisir une valeur entre 1 et 10"+TEXT_RESET);
 				}
 			}
 		} catch (Exception e) {
@@ -133,8 +135,8 @@ public class ShopApp {
 	 * Méthode qui affiche toutes les formation en base
 	 */
 	public static void displayCourses() { 	
-		System.out.printf("------------------------------------------------------------------------------------------------------------------------------------------------------%n");
-		System.out.printf(ANSI_BOLD +"%-13s | %-24s | %-60s | %-10s | %-10s | %-10s  %n" + TEXT_RESET,COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
+		System.out.printf(TEXT_WHITE +"------------------------------------------------------------------------------------------------------------------------------------------------------%n");
+		System.out.printf(ANSI_BOLD + TEXT_WHITE +"%-13s | %-24s | %-60s | %-10s | %-10s | %-10s  %n" + TEXT_RESET,COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
 		System.out.printf("------------------------------------------------------------------------------------------------------------------------------------------------------%n");
 		business.readCourses().forEach( a -> System.out.printf( TEXT_BLUE +"%-14s "+ TEXT_RESET +ANSI_BOLD +"|" + " %-24s "+ANSI_BOLD +"|" + TEXT_RESET +" %-65s "+ANSI_BOLD +"|" + TEXT_RESET +"" + TEXT_BLUE +" %-11s "+ANSI_BOLD +"|" + TEXT_RESET +"" + TEXT_BLUE +" %-11s "+ANSI_BOLD +"|" + TEXT_RESET +" " + TEXT_GREEN +" %-10s  " + TEXT_RESET +"%n",a.getId(),a.getName(),a.getDescription(),a.getDuration(), a.getMode(), a.getPrice()));
 
@@ -149,14 +151,14 @@ public class ShopApp {
 		int id = scanInt();
 		Category category = business.readOneCategory(id);
 		if(category != null) {
-			System.out.printf("              AFFICHAGE PAR CATEGORIE    %n");
+			System.out.printf( TEXT_WHITE +"              AFFICHAGE PAR CATEGORIE    %n");
 			System.out.printf("                     %-10s               %n",category.getName());
 			System.out.printf("------------------------------------------------------------------------------------------------------------------------------------------------------%n");
 			System.out.printf(ANSI_BOLD +"%-13s | %-24s | %-60s | %-10s | %-10s | %-10s  %n" + TEXT_RESET,COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
 			System.out.printf("------------------------------------------------------------------------------------------------------------------------------------------------------%n");
 			business.readCoursesByCatId(id).forEach( a -> System.out.printf(TEXT_BLUE +"%-14s "+ TEXT_RESET +ANSI_BOLD +"|" + " %-24s "+ANSI_BOLD +"|" + TEXT_RESET +" %-65s "+ANSI_BOLD +"|" + TEXT_RESET +"" + TEXT_BLUE +" %-11s "+ANSI_BOLD +"|" + TEXT_RESET +"" + TEXT_BLUE +" %-11s "+ANSI_BOLD +"|" + TEXT_RESET +" " + TEXT_GREEN +" %-10s  " + TEXT_RESET +"%n",a.getId(),a.getName(),a.getDescription(),a.getDuration(), a.getMode(), a.getPrice()));
 		}
-		else System.out.println(TEXT_BG_RED +"cette catégorie n'existe pas !" + TEXT_RESET);
+		else System.out.println(TEXT_BG_RED+ TEXT_WHITE +"cette catégorie n'existe pas !" + TEXT_RESET);
 	}
 
 	/**
@@ -191,7 +193,7 @@ public class ShopApp {
 		System.out.println("Saisissez le nom d'une formation recherché");
 		String searchWord = scan.next();
 		if (business.searchCoursesByWord(searchWord).size()==0) {
-			System.out.println(TEXT_BG_YELLOW +"Malheureusement, aucune formation ne corresponds à votre recherche" + TEXT_RESET);
+			System.out.println(TEXT_BG_YELLOW + TEXT_WHITE+"Malheureusement, aucune formation ne corresponds à votre recherche" + TEXT_RESET);
 		}else {
 			System.out.println("Voici la liste des formations contenant le mot clé " + searchWord);
 			System.out.printf(ANSI_BOLD +"%-13s | %-24s | %-60s | %-10s | %-10s | %-10s  %n" + TEXT_RESET,COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION,COLUMN_DURATION, COLUMN_MODE,COLUMN_PRICE);
@@ -230,8 +232,8 @@ public class ShopApp {
 		}
 		if (business.isAdmin(idUser)) {
 			isAdmin = true;
+			System.out.println(TEXT_BG_GREEN+ TEXT_WHITE +"Félicitation " + login +" Vous etes connecté en tant qu'administrateur"+TEXT_RESET);
 			System.out.print(TEXT_RED);
-			System.out.println(TEXT_BG_GREEN+"Félicitation " + login +" Vous etes connecté en tant qu'administrateur"+TEXT_RESET);
 			int choiceAdmin = 0;
 			
 			try {
@@ -253,7 +255,7 @@ public class ShopApp {
 					break;
 					case 7 : displayOrderbyId();
 					break;
-					case 8 : System.out.println();
+					case 8 : manageAdmin();
 					break;	
 					case 9 : userMenu();
 					break;
@@ -395,6 +397,7 @@ public class ShopApp {
 					System.out.println(TEXT_BG_GREEN+"La mise à jour à bien été prise en compte "+TEXT_RESET);
 				break;
 			case 6:
+				displayCategories();
 				System.out.println("Veuillez entrer la nouvelle categorie de la formation");
 				int category = scanInt();
 				Course updateCourseCategory = new Course(course.getId(),course.getName(), course.getDescription(), course.getDuration(), course.getMode(), course.getPrice(), category);
@@ -491,15 +494,7 @@ public class ShopApp {
 		System.out.printf(ANSI_BOLD +"%-13s | %-24s | %-60s |%n" + TEXT_RESET,COLUMN_ID,COLUMN_NAME,COLUMN_DESCRIPTION);
 		System.out.printf("-----------------------------------------------------------------------------------------------------------------%n");
 		business.readCategories().forEach( a -> System.out.printf( TEXT_BLUE +"%-14s "+ TEXT_RESET +ANSI_BOLD +"|" + " %-24s "+ANSI_BOLD +"|" + TEXT_RESET +" %-65s "+ANSI_BOLD +"|" + TEXT_RESET + "%n",a.getId(),a.getName(),a.getDescription()));
-
 		
-		
-		
-		//System.out.println(Category.centerString(COLUMN_ID) + Category.centerString(COLUMN_NAME) + Category.centerString(COLUMN_DESCRIPTION));
-		
-		
-		
-		//business.readCategories().forEach(System.out::println);		
 	}
 
 	/**
@@ -585,7 +580,7 @@ public class ShopApp {
 				int idOrder = business.order(idCustomer);	
 				if(idOrder == 0)	System.out.println(TEXT_BG_RED+"pb lors du passage de commande"+TEXT_RESET);
 				else {
-					System.out.println(TEXT_BG_GREEN+"Votre commande a bien été validé, voici son numéro : " + idOrder +TEXT_RESET);
+					System.out.println(TEXT_BG_GREEN+ TEXT_WHITE +"Votre commande a bien été validé, voici son numéro : " + idOrder +TEXT_RESET);
 					business.clearCart();
 				}
 			}
@@ -658,16 +653,24 @@ public class ShopApp {
 			}
 			else {
 				System.out.println(TEXT_BG_RED+"login ou password incorrect"+TEXT_RESET);
-				System.out.println("Souhaitez vous [1] reessayer ou [2] creer un compte");
+				System.out.println("Souhaitez vous [1] reessayer, [2] creer un compte ou [3] revenir au menu");
 				int choice = scanInt();
-				if (choice ==1 ) {
+				switch (choice) {
+				case 1:
 					connection();
-				} else {
+					break;
+				case 2: 
 					System.out.println("Nouvel utilisateur, pour créer un compte, tapez ok");
 					String ok = scan.next();
 					if(ok.equalsIgnoreCase("ok")) {
 						newUser();
 					}
+					break;
+				case 3: 
+					userMenu();
+					break;
+				default: System.out.println(TEXT_WHITE+ TEXT_BG_YELLOW+ "Attention, le choix saisi ne corresponds pas"+ TEXT_RESET);
+					break;
 				}
 			}
 		}
@@ -689,6 +692,37 @@ public class ShopApp {
 			System.out.println(TEXT_BG_GREEN+"création de l'utilisateur terminé, merci de vous connecter"+TEXT_RESET);
 		}
 		else	System.out.println(TEXT_BG_YELLOW+"Login déjà existant en base, veuillez vous connecter"+TEXT_RESET);
+	}
+	
+	public static void readAllUsers() {
+		System.out.printf(TEXT_WHITE+"%-20s | %-22s  %n",COLUMN_ID,COLUMN_LOGIN,TEXT_RESET);		
+		business.readAllUsers().forEach( a -> System.out.printf( TEXT_BLUE +"%-20s "+ TEXT_RESET +ANSI_BOLD +"|" + " %-22s "+ANSI_BOLD +"|" + TEXT_RESET + "%n",a.getId(),a.getLogin()));
+		
+	}
+	
+	public static void manageAdmin() {
+		System.out.println("Bonjour, que voulez vous faire ? ");
+		System.out.println("[1] Ajouter un administrateur [2] Supprimer un administrateur [3] Revenir au menu");
+		int choice = scanInt();
+		switch (choice) {
+		case 1:
+			readAllUsers();
+			System.out.println("Saisissez l'ID de l'utilisateur vous vous souhaitez passez Administrateur");
+			int choiceAdmin = scanInt();
+			if (business.addAdmin(choiceAdmin))
+				System.out.println(TEXT_WHITE + TEXT_BG_GREEN+"L'utilisateur est passé Administrateur" + TEXT_RESET);
+			break;
+		case 2: 
+			readAllUsers();
+			System.out.println("Saisissez l'ID de l'utilisateur vous vous souhaitez passez Administrateur");
+			int choiceDeleteAdmin = scanInt();
+			if (business.deleteAdmin(choiceDeleteAdmin))
+				System.out.println(TEXT_WHITE + TEXT_BG_GREEN+"L'utilisateur n'est plus administrateur" + TEXT_RESET);
+		case 3: 
+			adminMenu();
+		default:
+			break;
+		}
 	}
 
 	public static void stop(int time) {

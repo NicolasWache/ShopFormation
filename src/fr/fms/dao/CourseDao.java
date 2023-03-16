@@ -63,7 +63,11 @@ public class CourseDao implements Dao<Course> {
 			ps.setDouble(3, obj.getDuration());
 			ps.setString(4, obj.getMode());
 			ps.setDouble(5, obj.getPrice());	
-			ps.setInt(6, obj.getidCategory());	
+			if (obj.getidCategory() == 0) {
+				ps.setNull(6, 0);
+			} else {
+				ps.setInt(6, obj.getidCategory());
+			}	
 			ps.setInt(7, obj.getId());
 			if( ps.executeUpdate() == 1)	return true;
 			return true;

@@ -182,4 +182,19 @@ public class IBusinessImpl implements IBusiness {
 	public boolean updateBeforeDeleteCategory(int id) {
 		return ((CourseDao)courseDao).updateBeforeDeleteCategory(id);
 	}
+
+	@Override
+	public boolean addAdmin(int id) {
+		return ((UserDao)userDao).addAdmin(id);
+	}
+
+	@Override
+	public boolean deleteAdmin(int id) {
+		return ((UserDao)userDao).deleteAdmin(id);
+	}
+
+	@Override
+	public ArrayList<User> readAllUsers() {
+		return userDao.readAll();
+	}
 }
